@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels1="clr-namespace:BorderCrossing.ViewModels;assembly=BorderCrossing"
+             xmlns:strings="clr-namespace:BorderCrossing.Strings;assembly=BorderCrossing"
+             xmlns:controls="clr-namespace:BorderCrossing.Controls;assembly=BorderCrossing"
+             x:Class="BorderCrossing.Views.HowPage"
+             Title="{Binding Title}">
+
+    <ContentPage.BindingContext>
+        <viewModels1:HowViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <StackLayout Margin="20">
+            <Label Text="{x:Static strings:SharedResource.HowP11}" />
+            <Label Text="https://takeout.google.com/settings/takeout" TextColor="Blue" TextDecorations="Underline" HorizontalOptions="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding TapCommand}" CommandParameter="https://takeout.google.com/settings/takeout" />
+                </Label.GestureRecognizers>
+            </Label>
+            <Label Text="{x:Static strings:SharedResource.HowP12}"/>
+            <Label Text="{x:Static strings:SharedResource.HowP2}" />
+            <Image>
+                <Image.Source>
+                    <OnPlatform x:TypeArguments="ImageSource">
+                        <On Platform="iOS, Android" Value="takeoutM.png" />
+                        <!--<On Platform="UWP" Value="Assets/takeoutM.png" />-->
+                    </OnPlatform>
+                </Image.Source>
+            </Image>
+            <Label Text="{x:Static strings:SharedResource.HowP4}" LineBreakMode="WordWrap"/>
+            <Image>
+                <Image.Source>
+                    <OnPlatform x:TypeArguments="ImageSource">
+                        <On Platform="iOS, Android" Value="takeoutM2.png" />
+                        <!--<On Platform="UWP" Value="Assets/takeoutM2.png" />-->
+                    </OnPlatform>
+                </Image.Source>
+            </Image>
+            <Label Text="{x:Static strings:SharedResource.HowP5}" />
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{x:Static strings:SharedResource.HowP61}" />
+                        <controls:HyperlinkSpan Text="{x:Static strings:SharedResource.HowP62}" Url="https://docs.microsoft.com/appcenter/" />
+                        <Span Text="{x:Static strings:SharedResource.HowP62}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
