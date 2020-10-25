@@ -1,5 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
+using BorderCrossing.Services;
+using BorderCrossing.Strings;
 using Plugin.FilePicker;
 using Xamarin.Forms;
 
@@ -14,65 +17,30 @@ namespace BorderCrossing.Views
 
         private async void PickFile_Clicked(object sender, EventArgs args)
         {
-            await PickAndShowFile(null);
-        }
+            var pickedFile = await CrossFilePicker.Current.PickFile(null);
 
-        private async void PickImage_Clicked(object sender, EventArgs args)
-        {
-            string[] fileTypes = null;
-
-            if (Device.RuntimePlatform == Device.Android)
+            if (pickedFile != null)
             {
-                fileTypes = new string[] { "image/png", "image/jpeg" };
-            }
-
-            if (Device.RuntimePlatform == Device.iOS)
-            {
-                fileTypes = new string[] { "public.image" }; // same as iOS constant UTType.Image
-            }
-
-            if (Device.RuntimePlatform == Device.UWP)
-            {
-                fileTypes = new string[] { ".jpg", ".png" };
-            }
-
-            if (Device.RuntimePlatform == Device.WPF)
-            {
-                fileTypes = new string[] { "JPEG files (*.jpg)|*.jpg", "PNG files (*.png)|*.png" };
-            }
-
-            await PickAndShowFile(fileTypes);
-        }
-
-        private async Task PickAndShowFile(string[] fileTypes)
-        {
-            try
-            {
-                var pickedFile = await CrossFilePicker.Current.PickFile(fileTypes);
-
-                if (pickedFile != null)
+                if (!pickedFile.FileName.EndsWith("zip", StringComparison.OrdinalIgnoreCase))
                 {
-                    FileNameLabel.Text = pickedFile.FileName;
-                    FilePathLabel.Text = pickedFile.FilePath;
-
-                    if (pickedFile.FileName.EndsWith("jpg", StringComparison.OrdinalIgnoreCase)
-                        || pickedFile.FileName.EndsWith("png", StringComparison.OrdinalIgnoreCase)
-                        || pickedFile.FileName.EndsWith("jpeg", StringComparison.OrdinalIgnoreCase))
-                    {
-                        FileImagePreview.Source = ImageSource.FromStream(() => pickedFile.GetStream());
-                        FileImagePreview.IsVisible = true;
-                    }
-                    else
-                    {
-                        FileImagePreview.IsVisible = false;
-                    }
+                    throw new Exception(SharedResource.ZipWarning);
                 }
-            }
-            catch (Exception ex)
-            {
-                FileNameLabel.Text = ex.ToString();
-                FilePathLabel.Text = string.Empty;
-                FileImagePreview.IsVisible = false;
+
+                using (var fileStream = pickedFile.GetStream())
+                {
+                    var memoryStream = new MemoryStream();
+
+                    await fileStream.CopyToAsync(memoryStream);
+
+                    memoryStream.Seek(0, SeekOrigin.Begin);
+
+                    var locationHistory = await BorderCrossingHelper.ExtractJsonAsync(memoryStream, (s, progressChangedEventArgs) =>
+                    {
+                        Device.BeginInvokeOnMainThread(() =>
+                            LoadingProgressBar.ProgressTo(progressChangedEventArgs.ProgressPercentage / 100.0, 10,
+                                Easing.Linear));
+                    });
+                }
             }
         }
     }

@@ -9,12 +9,9 @@
         <viewModels:UploadViewModel />
     </ContentPage.BindingContext>
     <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+        <ProgressBar x:Name="LoadingProgressBar" />
         <StackLayout Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="Center">
             <Button Text="Pick file" Clicked="PickFile_Clicked" />
-            <Button Text="Pick image" Clicked="PickImage_Clicked" />
         </StackLayout>
-        <Label x:Name="FileNameLabel" Text="" VerticalOptions="Center" HorizontalOptions="Center" />
-        <Label x:Name="FilePathLabel" Text="" VerticalOptions="Center" HorizontalOptions="Center" />
-        <Image x:Name="FileImagePreview" VerticalOptions="Center" HorizontalOptions="Center" />
     </StackLayout>
 </ContentPage>

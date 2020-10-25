@@ -142,4 +142,10 @@
       <Name>BorderCrossing</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\takeoutM.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\takeoutM2.png" />
+  </ItemGroup>
 </Project>
