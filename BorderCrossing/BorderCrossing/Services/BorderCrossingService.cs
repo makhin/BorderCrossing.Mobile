@@ -11,25 +11,28 @@ namespace BorderCrossing.Services
 {
     public interface IBorderCrossingService
     {
-        Task<QueryRequest> GetQueryRequestAsync(LocationHistory locationHistory);
-        Task<List<CheckPoint>> ParseLocationHistoryAsync(LocationHistory locationHistory, QueryRequest model, ProgressChangedEventHandler callback);
+        LocationHistory LocationHistory { get; set; }
+        Task<QueryRequest> GetQueryRequestAsync();
+        Task<List<CheckPoint>> ParseLocationHistoryAsync(QueryRequest model, ProgressChangedEventHandler callback);
     }
 
     public class BorderCrossingService : IBorderCrossingService
     {
-        public async Task<QueryRequest> GetQueryRequestAsync(LocationHistory locationHistory)
+        public LocationHistory LocationHistory { get; set; }
+
+        public async Task<QueryRequest> GetQueryRequestAsync()
         {
             return await Task.FromResult(new QueryRequest
             {
-                StartDate = locationHistory.Locations.Min(l => l.TimestampMsUnix).ToDateTime(),
-                EndDate = locationHistory.Locations.Max(l => l.TimestampMsUnix).ToDateTime(),
+                StartDate = LocationHistory.Locations.Min(l => l.TimestampMsUnix).ToDateTime(),
+                EndDate = LocationHistory.Locations.Max(l => l.TimestampMsUnix).ToDateTime(),
                 IntervalType = IntervalType.Every12Hours
             });
         }
 
-        public async Task<List<CheckPoint>> ParseLocationHistoryAsync(LocationHistory locationHistory, QueryRequest model, ProgressChangedEventHandler callback)
+        public async Task<List<CheckPoint>> ParseLocationHistoryAsync(QueryRequest model, ProgressChangedEventHandler callback)
         {
-            var locations = BorderCrossingHelper.PrepareLocations(locationHistory, model.IntervalType);
+            var locations = BorderCrossingHelper.PrepareLocations(LocationHistory, model.IntervalType);
             var filteredLocations = locations.Where(l => l.Date >= model.StartDate && l.Date <= model.EndDate).OrderBy(l => l.TimestampMsUnix).ToList();
             
             var currentLocation = filteredLocations.First();
@@ -57,7 +60,7 @@ namespace BorderCrossing.Services
                         return;
                     }
 
-                    var range = locationHistory.Locations.Where(lh => lh.TimestampMsUnix >= currentLocation.TimestampMsUnix && lh.TimestampMsUnix <= location.TimestampMsUnix).ToList();
+                    var range = LocationHistory.Locations.Where(lh => lh.TimestampMsUnix >= currentLocation.TimestampMsUnix && lh.TimestampMsUnix <= location.TimestampMsUnix).ToList();
                     var checkPoint = BorderCrossingHelper.FindCheckPoint(range, currentLocation, currentCountry, location, countryName, GetCountryName);
 
                     checkPoints.Add(checkPoint);

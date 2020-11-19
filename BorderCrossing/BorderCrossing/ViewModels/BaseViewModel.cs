@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using Xamarin.Forms;
 
 using BorderCrossing.Models;
+using BorderCrossing.Models.Google;
 using BorderCrossing.Services;
 
 namespace BorderCrossing.ViewModels
@@ -13,6 +14,7 @@ namespace BorderCrossing.ViewModels
     public class BaseViewModel : INotifyPropertyChanged
     {
         public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
+        public IBorderCrossingService BorderCrossingService => DependencyService.Get<IBorderCrossingService>();
 
         bool isBusy = false;
         public bool IsBusy

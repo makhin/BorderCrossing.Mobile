@@ -8,10 +8,11 @@
     <ContentPage.BindingContext>
         <viewModels:UploadViewModel />
     </ContentPage.BindingContext>
+
     <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
-        <ProgressBar x:Name="LoadingProgressBar" />
+        <ProgressBar x:Name="LoadingProgressBar" Progress="{Binding UploadProgress}" />
         <StackLayout Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="Center">
-            <Button Text="Pick file" Clicked="PickFile_Clicked" />
+            <Button Text="Pick file" Command="{Binding PickFileCommand}" />
         </StackLayout>
     </StackLayout>
 </ContentPage>
