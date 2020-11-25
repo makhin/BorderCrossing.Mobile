@@ -1,32 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
-using BorderCrossing.Controls;
 using BorderCrossing.Models;
-using BorderCrossing.Models.Google;
-using BorderCrossing.Services;
+using BorderCrossing.Strings;
+using BorderCrossing.Views;
 using Xamarin.Forms;
 using Region = BorderCrossing.Models.Region;
 
 namespace BorderCrossing.ViewModels
 {
-    public class QueryPageModel : BaseViewModel
+    public class QueryViewModel : BaseViewModel
     {
         private DateTime _startDateTime;
         private DateTime _endDateTime;
-        private EnumSelection<IntervalType> _interval;
         private List<Region> _regions;
         private decimal _processingProgress;
+        private IntervalType _interval;
 
-        public QueryPageModel()
+        public QueryViewModel()
         {
-            Title = "Query";
+            Title = "";
             var request = BorderCrossingService.GetQueryRequestAsync().Result;
             StartDateTime = request.StartDate;
             EndDateTime = request.EndDate;
             Regions = request.Regions;
-            Interval = new EnumSelection<IntervalType>(IntervalType.Every12Hours);
+            Interval = request.IntervalType;
 
             RunCommand = new Command(OnRun);
         }
@@ -43,7 +41,7 @@ namespace BorderCrossing.ViewModels
             set => SetProperty(ref _endDateTime, value);
         }
 
-        public EnumSelection<IntervalType> Interval
+        public IntervalType Interval
         {
             get => _interval;
             set => SetProperty(ref _interval, value);
@@ -65,15 +63,15 @@ namespace BorderCrossing.ViewModels
 
         private async void OnRun()
         {
-            QueryRequest request = new QueryRequest()
+            var request = new QueryRequest()
             {
                 StartDate = StartDateTime,
                 EndDate = EndDateTime,
-                IntervalType = Interval.Value,
+                IntervalType = Interval,
                 Regions = Regions
             };
             await BorderCrossingService.ParseLocationHistoryAsync(request, ParseCallback);
-            await Shell.Current.GoToAsync("..");
+            await Shell.Current.GoToAsync(nameof(ResultPage));
         }
 
         private void ParseCallback(object sender, ProgressChangedEventArgs progressChangedEventArgs)

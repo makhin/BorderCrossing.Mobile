@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:BorderCrossing.ViewModels;assembly=BorderCrossing"
+             xmlns:strings="clr-namespace:BorderCrossing.Strings;assembly=BorderCrossing"
              x:Class="BorderCrossing.Views.UploadPage"
              Title="{Binding Title}">
     
@@ -9,10 +10,8 @@
         <viewModels:UploadViewModel />
     </ContentPage.BindingContext>
 
-    <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+    <StackLayout Padding="10, 0">
         <ProgressBar x:Name="LoadingProgressBar" Progress="{Binding UploadProgress}" />
-        <StackLayout Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="Center">
-            <Button Text="Pick file" Command="{Binding PickFileCommand}" />
-        </StackLayout>
+        <Button Text="{x:Static strings:SharedResource.UploadBrowse}" Command="{Binding PickFileCommand}" />
     </StackLayout>
 </ContentPage>

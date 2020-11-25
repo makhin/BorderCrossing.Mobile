@@ -17,8 +17,7 @@ namespace BorderCrossing.ViewModels
 
         public UploadViewModel()
         {
-            Title = "Upload";
-
+            Title = SharedResource.UploadP3;
             PickFileCommand = new Command(OnPickFile);
         }
 
@@ -26,12 +25,7 @@ namespace BorderCrossing.ViewModels
         {
             get => _uploadProgress;
 
-            set
-            {
-                if (_uploadProgress == value) return;
-                _uploadProgress = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _uploadProgress, value);
         }
 
         private async void OnPickFile(object obj)

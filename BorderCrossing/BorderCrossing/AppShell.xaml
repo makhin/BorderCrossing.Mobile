@@ -2,6 +2,7 @@
 <Shell xmlns="http://xamarin.com/schemas/2014/forms" 
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:local="clr-namespace:BorderCrossing.Views"
+       xmlns:strings="clr-namespace:BorderCrossing.Strings;assembly=BorderCrossing"
        Title="BorderCrossing"
        x:Class="BorderCrossing.AppShell">
 
@@ -30,9 +31,8 @@
     </Shell.Resources>
 
     <TabBar>
-        <ShellContent Title="About" Icon="tab_about.png" Route="AboutPage" ContentTemplate="{DataTemplate local:AboutPage}" />
-        <ShellContent Title="How" Icon="tab_about.png" Route="HowPage" ContentTemplate="{DataTemplate local:HowPage}" />
-        <ShellContent Title="Upload" Icon="tab_feed.png" ContentTemplate="{DataTemplate local:UploadPage}" />
-        <ShellContent Title="Browse" Icon="tab_feed.png" ContentTemplate="{DataTemplate local:ItemsPage}" />
+        <ShellContent Title="{x:Static strings:SharedResource.HomeNav}" Icon="home.png" Route="AboutPage" ContentTemplate="{DataTemplate local:AboutPage}" />
+        <ShellContent Title="{x:Static strings:SharedResource.HowNav}" Icon="help.png" Route="HowPage" ContentTemplate="{DataTemplate local:HowPage}" />
+        <ShellContent Title="{x:Static strings:SharedResource.UploadNav}" Icon="arrow_up.png" ContentTemplate="{DataTemplate local:UploadPage}" />
     </TabBar>
 </Shell>

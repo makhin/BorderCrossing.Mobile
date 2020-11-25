@@ -13,7 +13,6 @@ namespace BorderCrossing
         {
             InitializeComponent();
 
-            DependencyService.Register<MockDataStore>();
             DependencyService.Register<BorderCrossingService>();
             MainPage = new AppShell();
         }

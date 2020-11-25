@@ -4,9 +4,9 @@ using Xamarin.Forms.Xaml;
 namespace BorderCrossing.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class QueryPage : ContentPage
+    public partial class ResultPage : ContentPage
     {
-        public QueryPage()
+        public ResultPage()
         {
             InitializeComponent();
         }

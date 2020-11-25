@@ -12,13 +12,15 @@ namespace BorderCrossing.Services
     public interface IBorderCrossingService
     {
         LocationHistory LocationHistory { get; set; }
+        List<CheckPoint> CheckPoints { get; set; }
         Task<QueryRequest> GetQueryRequestAsync();
-        Task<List<CheckPoint>> ParseLocationHistoryAsync(QueryRequest model, ProgressChangedEventHandler callback);
+        Task ParseLocationHistoryAsync(QueryRequest model, ProgressChangedEventHandler callback);
     }
 
     public class BorderCrossingService : IBorderCrossingService
     {
         public LocationHistory LocationHistory { get; set; }
+        public List<CheckPoint> CheckPoints { get; set; }
 
         public async Task<QueryRequest> GetQueryRequestAsync()
         {
@@ -30,7 +32,7 @@ namespace BorderCrossing.Services
             });
         }
 
-        public async Task<List<CheckPoint>> ParseLocationHistoryAsync(QueryRequest model, ProgressChangedEventHandler callback)
+        public async Task ParseLocationHistoryAsync(QueryRequest model, ProgressChangedEventHandler callback)
         {
             var locations = BorderCrossingHelper.PrepareLocations(LocationHistory, model.IntervalType);
             var filteredLocations = locations.Where(l => l.Date >= model.StartDate && l.Date <= model.EndDate).OrderBy(l => l.TimestampMsUnix).ToList();
@@ -41,7 +43,7 @@ namespace BorderCrossing.Services
             var i = 0;
             var count = filteredLocations.Count();
 
-            var checkPoints = new List<CheckPoint>
+            CheckPoints = new List<CheckPoint>
             {
                 BorderCrossingHelper.LocationToCheckPoint(currentLocation, currentCountry)
             };
@@ -63,16 +65,14 @@ namespace BorderCrossing.Services
                     var range = LocationHistory.Locations.Where(lh => lh.TimestampMsUnix >= currentLocation.TimestampMsUnix && lh.TimestampMsUnix <= location.TimestampMsUnix).ToList();
                     var checkPoint = BorderCrossingHelper.FindCheckPoint(range, currentLocation, currentCountry, location, countryName, GetCountryName);
 
-                    checkPoints.Add(checkPoint);
+                    CheckPoints.Add(checkPoint);
                     currentCountry = countryName;
                     currentLocation = location;
                 });
             }
 
             var last = filteredLocations.Last();
-            checkPoints.Add(BorderCrossingHelper.LocationToCheckPoint(last, GetCountryName(last.Point)));
-
-            return checkPoints;
+            CheckPoints.Add(BorderCrossingHelper.LocationToCheckPoint(last, GetCountryName(last.Point)));
         }
 
         private static string GetCountryName(Geometry point)

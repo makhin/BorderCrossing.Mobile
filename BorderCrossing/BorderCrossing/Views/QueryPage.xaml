@@ -3,26 +3,38 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:BorderCrossing.ViewModels;assembly=BorderCrossing"
-             xmlns:model="clr-namespace:BorderCrossing.Models"
+             xmlns:converters="clr-namespace:BorderCrossing.Converters;assembly=BorderCrossing"
+             xmlns:local="clr-namespace:BorderCrossing.Models;assembly=BorderCrossing"
+             xmlns:strings="clr-namespace:BorderCrossing.Strings;assembly=BorderCrossing"
              x:Class="BorderCrossing.Views.QueryPage"
              Title="{Binding Title}">
 
     <ContentPage.BindingContext>
-        <viewModels:QueryPageModel />
+        <viewModels:QueryViewModel />
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
         <StackLayout Padding="10, 0">
+            <DatePicker Date="{Binding StartDateTime}" FontSize="Small" />
 
-            <DatePicker Date="{Binding StartDateTime}" />
-
-            <DatePicker Date="{Binding EndDateTime}" />
+            <DatePicker Date="{Binding EndDateTime}" FontSize="Small"/>
 
             <StackLayout Orientation="Horizontal">
-                <!-- Using RadioButtons for exactly 1 selection behavior -->
-                <RadioButton IsChecked="{Binding Interval[BorderCrossing.Models.IntervalType.Day]}" Text="Day" GroupName="Interval"></RadioButton>
-                <RadioButton IsChecked="{Binding Interval[BorderCrossing.Models.IntervalType.Every12Hours]}" Text="Every 12 hours" GroupName="Interval"></RadioButton>
-                <RadioButton IsChecked="{Binding Interval[BorderCrossing.Models.IntervalType.Hour]}" Text="Hour" GroupName="Interval"></RadioButton>
+                <StackLayout.Resources>
+                    <converters:ComparisonConverter x:Key="ComparisonConverter" />
+                </StackLayout.Resources>
+                <StackLayout Orientation="Horizontal">
+                    <RadioButton GroupName="Interval" IsChecked="{Binding Path=Interval, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static local:IntervalType.Day}}" />
+                    <Label Text="{x:Static strings:SharedResource.Day}" VerticalTextAlignment="Center" VerticalOptions="Center"></Label>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <RadioButton GroupName="Interval" IsChecked="{Binding Path=Interval, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static local:IntervalType.Every12Hours}}" />
+                    <Label Text="{x:Static strings:SharedResource.Every12Hours}" VerticalTextAlignment="Center" VerticalOptions="Center"></Label>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <RadioButton GroupName="Interval" IsChecked="{Binding Path=Interval, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static local:IntervalType.Hour}}" />
+                    <Label Text="{x:Static strings:SharedResource.Hour}" VerticalTextAlignment="Center" VerticalOptions="Center"></Label>
+                </StackLayout>
             </StackLayout>
 
             <ListView ItemsSource="{Binding Regions}">
@@ -38,13 +50,9 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-
-
             <ProgressBar x:Name="ProcessingProgressBar" Progress="{Binding ProcessingProgress}" />
 
-            <Button Text="Run"
-                    Command="{Binding RunCommand}"
-                    />
+            <Button Text="{x:Static strings:SharedResource.Run}" Command="{Binding RunCommand}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:BorderCrossing.ViewModels;assembly=BorderCrossing"
+             xmlns:dg="clr-namespace:Xamarin.Forms.DataGrid;assembly=Xamarin.Forms.DataGrid"
+             xmlns:converters="clr-namespace:BorderCrossing.Converters;assembly=BorderCrossing"
+             xmlns:strings="clr-namespace:BorderCrossing.Strings;assembly=BorderCrossing"
+             x:Class="BorderCrossing.Views.ResultPage"
+             Title="{Binding Title}">
+
+    <ContentPage.BindingContext>
+        <viewModels:ResultViewModel x:Name="ViewModel" />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <converters:DateConverter2 x:Key="DateConverter2" />
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Margin="10">
+                <dg:DataGrid ItemsSource="{Binding Response.Periods}" HeaderBordersVisible="False" BorderThickness="0" IsSortable="False" IsRefreshing="False" SelectionEnabled="False">
+                    <dg:DataGrid.Columns>
+                        <dg:DataGridColumn Title="{x:Static strings:SharedResource.Arrival}" PropertyName="ArrivalPoint" >
+                            <dg:DataGridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ContentView HorizontalOptions="Fill" VerticalOptions="Fill">
+                                        <Label Text="{Binding Date, Converter={StaticResource DateConverter2}}" TextColor="Blue" TextDecorations="Underline" HorizontalOptions="Center">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding OpenMapCommand, Source={x:Reference ViewModel}}" CommandParameter="{Binding .}" />
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                    </ContentView>
+                                </DataTemplate>
+                            </dg:DataGridColumn.CellTemplate>
+                        </dg:DataGridColumn>
+                        <dg:DataGridColumn Title="{x:Static strings:SharedResource.Country}" PropertyName="Country" VerticalContentAlignment="Start"/>
+                        <dg:DataGridColumn Title="{x:Static strings:SharedResource.Departure}" PropertyName="DeparturePoint" >
+                            <dg:DataGridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ContentView HorizontalOptions="Fill" VerticalOptions="Fill">
+                                        <Label Text="{Binding Date, Converter={StaticResource DateConverter2}}" TextColor="Blue" TextDecorations="Underline" HorizontalOptions="Center">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding OpenMapCommand, Source={x:Reference ViewModel}}" CommandParameter="{Binding .}" />
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                    </ContentView>
+                                </DataTemplate>
+                            </dg:DataGridColumn.CellTemplate>
+                        </dg:DataGridColumn>
+                        <dg:DataGridColumn Title="{x:Static strings:SharedResource.Days}" PropertyName="Days" Width="30" VerticalContentAlignment="Start"/>
+                    </dg:DataGrid.Columns>
+                    <dg:DataGrid.RowsBackgroundColorPalette>
+                        <dg:PaletteCollection>
+                            <Color>#FFFFFF</Color>
+                        </dg:PaletteCollection>
+                    </dg:DataGrid.RowsBackgroundColorPalette>
+                </dg:DataGrid>
+
+                <dg:DataGrid ItemsSource="{Binding Response.CountryDays}" HeaderBordersVisible="False" BorderThickness="0" IsSortable="False" IsRefreshing="False" SelectionEnabled="False">
+                    <dg:DataGrid.Columns>
+                        <dg:DataGridColumn Title="{x:Static strings:SharedResource.Country}" PropertyName="Key" HorizontalContentAlignment="Start" VerticalContentAlignment="Start"/>
+                        <dg:DataGridColumn Title="{x:Static strings:SharedResource.Days}" PropertyName="Value" VerticalContentAlignment="Start"/>
+                    </dg:DataGrid.Columns>
+                    <dg:DataGrid.RowsBackgroundColorPalette>
+                        <dg:PaletteCollection>
+                            <Color>#FFFFFF</Color>
+                        </dg:PaletteCollection>
+                    </dg:DataGrid.RowsBackgroundColorPalette>
+                </dg:DataGrid>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

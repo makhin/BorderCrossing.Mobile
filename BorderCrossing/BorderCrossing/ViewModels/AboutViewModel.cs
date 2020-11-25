@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
+using BorderCrossing.Strings;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -9,10 +10,7 @@ namespace BorderCrossing.ViewModels
     {
         public AboutViewModel()
         {
-            Title = "About";
-            OpenWebCommand = new Command(async () => await Browser.OpenAsync("https://aka.ms/xamain-quickstart"));
+            Title = SharedResource.HomeTitle;
         }
-
-        public ICommand OpenWebCommand { get; }
     }
 }
