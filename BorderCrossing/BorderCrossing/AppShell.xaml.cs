@@ -11,6 +11,9 @@ namespace BorderCrossing
         public AppShell()
         {
             InitializeComponent();
+            Routing.RegisterRoute(nameof(AboutPage), typeof(AboutPage));
+            Routing.RegisterRoute(nameof(HowPage), typeof(HowPage));
+            Routing.RegisterRoute(nameof(UploadPage), typeof(UploadPage));
             Routing.RegisterRoute(nameof(QueryPage), typeof(QueryPage));
             Routing.RegisterRoute(nameof(ResultPage), typeof(ResultPage));
         }

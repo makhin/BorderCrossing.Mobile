@@ -13,14 +13,18 @@
 
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout Margin="20">
-                <Label Text="{x:Static strings:SharedResource.HowP11}" />
-                <Label Text="https://takeout.google.com/settings/takeout" TextColor="Blue" TextDecorations="Underline" HorizontalOptions="Center">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding TapCommand}" CommandParameter="https://takeout.google.com/settings/takeout" />
-                    </Label.GestureRecognizers>
+            <StackLayout Padding="10, 0">
+                <Label>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{x:Static strings:SharedResource.HowP11}" />
+                            <Span Text=" " />
+                            <controls:HyperlinkSpan Text="https://takeout.google.com/settings/takeout" Url="https://takeout.google.com/settings/takeout" />
+                            <Span Text=". " />
+                            <Span Text="{x:Static strings:SharedResource.HowP12}" />
+                        </FormattedString>
+                    </Label.FormattedText>
                 </Label>
-                <Label Text="{x:Static strings:SharedResource.HowP12}"/>
                 <Label Text="{x:Static strings:SharedResource.HowP2}" />
                 <Image>
                     <Image.Source>
@@ -44,7 +48,13 @@
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="{x:Static strings:SharedResource.HowP61}" />
-                            <controls:HyperlinkSpan Text="{x:Static strings:SharedResource.HowP62}" Url="https://docs.microsoft.com/appcenter/" />
+                            <Span Text=" " />
+                            <Span Text="{x:Static strings:SharedResource.HowP62}" TextColor="Blue" TextDecorations="Underline">
+                                <Span.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding TapCommand}" />
+                                </Span.GestureRecognizers>
+                            </Span>
+                            <Span Text=". " />
                             <Span Text="{x:Static strings:SharedResource.HowP63}" />
                         </FormattedString>
                     </Label.FormattedText>

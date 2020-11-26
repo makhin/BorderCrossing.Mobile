@@ -13,17 +13,27 @@
 
     <StackLayout Padding="10, 0">
         <Label Text="{x:Static strings:SharedResource.HomeP1}"/>
-        <StackLayout>
-            <Label Text="{x:Static strings:SharedResource.HomeP21}"/>
-            <Label Text="{x:Static strings:SharedResource.HomeP22}" TextDecorations="Underline"/>
-        </StackLayout>
+        <Label>
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="{x:Static strings:SharedResource.HomeP21}" />
+                    <Span Text=" "/>
+                    <Span Text="{x:Static strings:SharedResource.HomeP22}" TextColor="Blue" TextDecorations="Underline">
+                        <Span.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding TapCommand}" />
+                        </Span.GestureRecognizers>
+                    </Span>
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
         <Label Text="{x:Static strings:SharedResource.HomeP3}"/>
         <Label Text="{x:Static strings:SharedResource.HomeP4}"/>
         <Label>
             <Label.FormattedText>
                 <FormattedString>
                     <Span Text="{x:Static strings:SharedResource.HomeP5}" />
-                    <controls:HyperlinkSpan Text="mailto:amakhin@hotmail.com" Url="mailto:amakhin@hotmail.com" />
+                    <Span Text=" "/>
+                    <controls:HyperlinkSpan Text="amakhin@hotmail.com" Url="mailto:amakhin@hotmail.com" />
                 </FormattedString>
             </Label.FormattedText>
         </Label>
